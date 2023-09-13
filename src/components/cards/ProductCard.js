@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 const ProductCard = () => {
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
+      <CardActionArea href="/product/sasa-tepung-bumbu">
         <CardMedia
           component="img"
           height="140"
