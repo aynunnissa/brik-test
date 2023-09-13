@@ -11,6 +11,7 @@ import {
 
 // style
 import breakpoints from './breakpoints';
+import palette from './palette';
 
 ThemeConfig.propTypes = {
   children: PropTypes.node,
@@ -21,6 +22,7 @@ export default function ThemeConfig({ children }) {
     () => ({
       breakpoints,
       spacing: [0, 4, 8, 16, 24, 48, 96],
+      palette,
     }),
     []
   );
