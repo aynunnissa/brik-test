@@ -3,7 +3,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Stack } from '@mui/material';
+import { Button, CardActionArea, CardActions, Stack } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const ProductCard = () => {
   return (
@@ -37,6 +38,11 @@ const ProductCard = () => {
             <Typography variant="body2">10RB+ Terjual</Typography>
           </Stack>
         </CardContent>
+        <CardActions>
+          <Button variant="outlined" startIcon={<AddIcon />} fullWidth>
+            Keranjang
+          </Button>
+        </CardActions>
       </CardActionArea>
     </Card>
   );
