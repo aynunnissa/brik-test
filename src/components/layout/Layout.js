@@ -1,8 +1,12 @@
+import { Container } from '@mui/material';
+
 const Layout = ({ children }) => {
   return (
     <>
       <p>Header here</p>
-      <main>{children}</main>
+      <Container maxWidth="xl" component="main">
+        {children}
+      </Container>
       <p>Footer</p>
     </>
   );
