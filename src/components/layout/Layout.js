@@ -1,9 +1,12 @@
 import { Container } from '@mui/material';
 
-const Layout = ({ children }) => {
+import { connect } from 'react-redux';
+
+const Layout = ({ cart, children }) => {
   return (
     <>
       <p>Header here</p>
+      <p>Total cart: {cart.total}</p>
       <Container maxWidth="xl" component="main">
         {children}
       </Container>
@@ -12,4 +15,10 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+const mapStateToProps = state => {
+  return {
+    cart: state.cart,
+  };
+};
+
+export default connect(mapStateToProps)(Layout);
