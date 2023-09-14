@@ -1,3 +1,7 @@
+# How to Test?
+
+There's no specific account for login. As long as the input is valid, then user can login.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
