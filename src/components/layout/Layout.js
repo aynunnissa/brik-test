@@ -1,40 +1,22 @@
-import { Button, Container } from '@mui/material';
-import { useEffect } from 'react';
+import { Container } from '@mui/material';
 
-import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
-import { logout } from '../../store/actions/action';
-
-const Layout = ({ auth, cart, logout, children }) => {
-  const push = useNavigate();
-
-  useEffect(() => {
-    if (!auth.isLoggedIn) {
-      push('/auth/login');
-    }
-  }, []);
+const Layout = ({ children }) => {
   return (
     <>
-      <p>Header here</p>
-      <p>User: {auth.isLoggedIn ? 'ada' : 'none'}</p>
-      <p>Total cart: {cart.totalQty}</p>
-      <Button variant="outlined" onClick={logout}>
-        Logout
-      </Button>
-      <Container maxWidth="xl" component="main">
+      <Navbar />
+      <Container
+        maxWidth="xl"
+        component="main"
+        sx={{ pt: '100px', pb: '20px', minHeight: '100vh' }}
+      >
         {children}
       </Container>
-      <p>Footer</p>
+      <Footer />
     </>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    auth: state.auth,
-    cart: state.cart,
-  };
-};
-
-export default connect(mapStateToProps, { logout })(Layout);
+export default Layout;
