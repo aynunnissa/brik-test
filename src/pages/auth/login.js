@@ -20,14 +20,48 @@ import { useEffect, useState } from 'react';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+// hooks
+import useInput from '../../hooks/use-input';
+
+// redux
 import { connect } from 'react-redux';
 import { login } from '../../store/actions/action';
+
+const isNotEmpty = value => value.trim() !== '';
+const emailValidationReg = /@.*\./;
+const isValidEmail = value =>
+  isNotEmpty(value) && emailValidationReg.test(value);
 
 const Login = ({ auth, login }) => {
   const theme = useTheme();
   const push = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    value: emailValue,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    submitHandler: emailSubmitHandler,
+    reset: resetEmail,
+  } = useInput(isValidEmail);
+
+  const {
+    value: passwordValue,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    submitHandler: passwordSubmitHandler,
+    reset: resetPassword,
+  } = useInput(isNotEmpty);
+
+  let isFormValid = false;
+
+  if (passwordIsValid && emailIsValid) {
+    isFormValid = true;
+  }
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 
@@ -38,8 +72,12 @@ const Login = ({ auth, login }) => {
   const handleSubmitLogin = event => {
     event.preventDefault();
 
+    if (!isFormValid) {
+      return;
+    }
+
     const user = {
-      email: 'hello@gmail.com',
+      email: emailValue,
     };
     login(user);
 
@@ -72,18 +110,38 @@ const Login = ({ auth, login }) => {
         >
           <Stack gap={4}>
             <TextField
-              id="outlined-required"
-              label="No. Handphone/Email"
+              id="email"
+              label="Email"
+              type="text"
+              placeholder="Masukkan alamat email"
+              value={emailValue}
+              onChange={emailChangeHandler}
+              onBlur={emailBlurHandler}
+              error={emailHasError}
+              helperText={emailHasError && 'Email tidak valid'}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              required
               fullWidth
             />
-            <FormControl variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-password-input"
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
+            <TextField
+              id="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Masukkan password"
+              value={passwordValue}
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
+              error={passwordHasError}
+              helperText={passwordHasError && 'Password tidak boleh kosong'}
+              required
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+              InputProps={{
+                endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -94,12 +152,10 @@ const Login = ({ auth, login }) => {
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                }
-                label="Password"
-                fullWidth
-              />
-            </FormControl>
-            <Button variant="contained" type="submit">
+                ),
+              }}
+            />
+            <Button variant="contained" type="submit" disabled={!isFormValid}>
               Masuk
             </Button>
           </Stack>
