@@ -1,5 +1,19 @@
 import * as types from './type';
 
+// Auth
+export const login = user => dispatch => {
+  dispatch({
+    type: types.LOGIN,
+    user,
+  });
+};
+
+export const logout = () => dispatch => {
+  dispatch({
+    type: types.LOGOUT,
+  });
+};
+
 // Cart
 export const resetCart = () => dispatch => {
   dispatch({
