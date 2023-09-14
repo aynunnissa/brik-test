@@ -6,7 +6,10 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-const ProductCard = () => {
+import { addToCart } from '../../store/actions/action';
+import { connect } from 'react-redux';
+
+const ProductCard = ({ addToCart }) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea href="/product/sasa-tepung-bumbu">
@@ -39,7 +42,12 @@ const ProductCard = () => {
           </Stack>
         </CardContent>
         <CardActions>
-          <Button variant="outlined" startIcon={<AddIcon />} fullWidth>
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={() => addToCart()}
+            fullWidth
+          >
             Keranjang
           </Button>
         </CardActions>
@@ -48,4 +56,4 @@ const ProductCard = () => {
   );
 };
 
-export default ProductCard;
+export default connect(null, { addToCart })(ProductCard);
