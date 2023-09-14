@@ -96,7 +96,7 @@ const Login = ({ auth, login }) => {
   }, []);
 
   return (
-    <Stack direction="row" justifyContent="flex-end">
+    <Stack direction="row" justifyContent="center">
       <Paper elevation={0} sx={{ width: '400px', maxWidth: 'auto', p: 4 }}>
         <Typography variant="h5" component="h2">
           Log in
