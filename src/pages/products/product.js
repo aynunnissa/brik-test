@@ -1,9 +1,32 @@
-import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+  IconButton,
+  TextField,
+} from '@mui/material';
 import { useParams } from 'react-router';
-import AddIcon from '@mui/icons-material/Add';
 
-const ProductDetail = () => {
+import {
+  AddBox,
+  IndeterminateCheckBox,
+  Add as AddIcon,
+} from '@mui/icons-material';
+
+import { addToCart, incCartQty, decCartQty } from '../../store/actions/action';
+import { connect } from 'react-redux';
+import productData from '../../data/product.json';
+
+const ProductDetail = ({ addToCart, incCartQty, decCartQty }) => {
   const { slug } = useParams();
+  const product = productData.data[0];
+
+  function addProductToCart() {
+    addToCart(product);
+  }
 
   const DescriptionItem = ({ title, content }) => {
     return (
@@ -41,8 +64,29 @@ const ProductDetail = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>QTY</Box>
-            <Button variant="contained" startIcon={<AddIcon />}>
+            <Stack direction="row" alignItems="center" justifyContent="center">
+              <Box>QTY</Box>
+              <IconButton onClick={() => decCartQty(product.id)}>
+                <IndeterminateCheckBox color="primary" fontSize="large" />
+              </IconButton>
+              <TextField
+                id="outlined-basic"
+                size="small"
+                variant="outlined"
+                value={0}
+                inputProps={{
+                  style: { padding: '5px', width: '50px', textAlign: 'center' },
+                }}
+              />
+              <IconButton onClick={() => incCartQty(product.id)}>
+                <AddBox color="primary" fontSize="large" />
+              </IconButton>
+            </Stack>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={addProductToCart}
+            >
               Keranjang
             </Button>
           </Stack>
@@ -65,4 +109,6 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default connect(null, { addToCart, incCartQty, decCartQty })(
+  ProductDetail
+);
