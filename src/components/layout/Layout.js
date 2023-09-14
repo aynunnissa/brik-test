@@ -6,7 +6,7 @@ const Layout = ({ cart, children }) => {
   return (
     <>
       <p>Header here</p>
-      <p>Total cart: {cart.total}</p>
+      <p>Total cart: {cart.totalQty}</p>
       <Container maxWidth="xl" component="main">
         {children}
       </Container>

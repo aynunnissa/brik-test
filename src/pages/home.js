@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { useTheme } from '@mui/material';
 import EastIcon from '@mui/icons-material/East';
 
+import productData from '../data/product.json';
+
 const Home = () => {
   const theme = useTheme();
 
@@ -24,9 +26,9 @@ const Home = () => {
         </StyledLink>
       </Stack>
       <Grid container spacing={2} mt={2}>
-        {Array.from({ length: 6 }, () => (
-          <Grid item xs={2}>
-            <ProductCard />
+        {productData?.data.map(product => (
+          <Grid key={`product-${product.id}`} item xs={2}>
+            <ProductCard product={product} />
           </Grid>
         ))}
       </Grid>

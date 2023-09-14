@@ -3,13 +3,29 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions, Stack } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import {
+  Box,
+  Button,
+  CardActionArea,
+  CardActions,
+  IconButton,
+  Stack,
+  TextField,
+} from '@mui/material';
+import {
+  AddBox,
+  IndeterminateCheckBox,
+  Add as AddIcon,
+} from '@mui/icons-material';
 
-import { addToCart } from '../../store/actions/action';
+import { addToCart, incCartQty, decCartQty } from '../../store/actions/action';
 import { connect } from 'react-redux';
 
-const ProductCard = ({ addToCart }) => {
+const ProductCard = ({ product, addToCart, incCartQty, decCartQty }) => {
+  function addProductToCart() {
+    addToCart(product);
+  }
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea href="/product/sasa-tepung-bumbu">
@@ -45,15 +61,34 @@ const ProductCard = ({ addToCart }) => {
           <Button
             variant="outlined"
             startIcon={<AddIcon />}
-            onClick={() => addToCart()}
+            onClick={addProductToCart}
             fullWidth
           >
             Keranjang
           </Button>
         </CardActions>
       </CardActionArea>
+      <Stack direction="row" alignItems="center" justifyContent="center">
+        <IconButton onClick={() => decCartQty(product.id)}>
+          <IndeterminateCheckBox color="primary" fontSize="large" />
+        </IconButton>
+        <TextField
+          id="outlined-basic"
+          size="small"
+          variant="outlined"
+          value={0}
+          inputProps={{
+            style: { padding: '5px', width: '50px', textAlign: 'center' },
+          }}
+        />
+        <IconButton onClick={() => incCartQty(product.id)}>
+          <AddBox color="primary" fontSize="large" />
+        </IconButton>
+      </Stack>
     </Card>
   );
 };
 
-export default connect(null, { addToCart })(ProductCard);
+export default connect(null, { addToCart, incCartQty, decCartQty })(
+  ProductCard
+);
