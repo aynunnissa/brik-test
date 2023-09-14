@@ -11,17 +11,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Icons
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { connect } from 'react-redux';
 
-const Register = () => {
+const Register = ({ auth }) => {
   const theme = useTheme();
+  const push = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,6 +32,18 @@ const Register = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
+
+  const handleRegistSubmit = event => {
+    event.preventDefault();
+
+    push('/auth/login');
+  };
+
+  useEffect(() => {
+    if (auth.isLoggedIn) {
+      push('/');
+    }
+  }, []);
 
   const PrimaryLink = styled(Link)`
     text-decoration: none;
@@ -42,7 +56,13 @@ const Register = () => {
         <Typography variant="h5" component="h2">
           Daftar
         </Typography>
-        <Box component="form" noValidate autoComplete="off" mt={5}>
+        <Box
+          component="form"
+          noValidate
+          autoComplete="off"
+          mt={5}
+          onSubmit={handleRegistSubmit}
+        >
           <Stack gap={4}>
             <TextField id="outlined-required" label="Nama" fullWidth />
             <TextField id="outlined-required" label="No. Handphone" fullWidth />
@@ -69,7 +89,9 @@ const Register = () => {
                 fullWidth
               />
             </FormControl>
-            <Button variant="contained">Daftar</Button>
+            <Button variant="contained" type="submit">
+              Daftar
+            </Button>
           </Stack>
         </Box>
         <Stack
@@ -89,4 +111,10 @@ const Register = () => {
   );
 };
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(Register);

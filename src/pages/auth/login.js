@@ -11,17 +11,21 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Icons
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-const Login = () => {
+import { connect } from 'react-redux';
+import { login } from '../../store/actions/action';
+
+const Login = ({ auth, login }) => {
   const theme = useTheme();
+  const push = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,10 +35,27 @@ const Login = () => {
     event.preventDefault();
   };
 
+  const handleSubmitLogin = event => {
+    event.preventDefault();
+
+    const user = {
+      email: 'hello@gmail.com',
+    };
+    login(user);
+
+    push('/');
+  };
+
   const PrimaryLink = styled(Link)`
     text-decoration: none;
     color: ${theme.palette.primary.main};
   `;
+
+  useEffect(() => {
+    if (auth.isLoggedIn) {
+      push('/');
+    }
+  }, []);
 
   return (
     <Stack direction="row" justifyContent="flex-end">
@@ -42,7 +63,13 @@ const Login = () => {
         <Typography variant="h5" component="h2">
           Log in
         </Typography>
-        <Box component="form" noValidate autoComplete="off" mt={5}>
+        <Box
+          component="form"
+          noValidate
+          autoComplete="off"
+          mt={5}
+          onSubmit={handleSubmitLogin}
+        >
           <Stack gap={4}>
             <TextField
               id="outlined-required"
@@ -72,7 +99,9 @@ const Login = () => {
                 fullWidth
               />
             </FormControl>
-            <Button variant="contained">LOG IN</Button>
+            <Button variant="contained" type="submit">
+              Masuk
+            </Button>
           </Stack>
         </Box>
         <Stack
@@ -92,4 +121,10 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps, { login })(Login);
