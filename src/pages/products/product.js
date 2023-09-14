@@ -20,16 +20,22 @@ import { addToCart, incCartQty, decCartQty } from '../../store/actions/action';
 import { connect } from 'react-redux';
 import productData from '../../data/product.json';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ProductDetail = ({ cart, addToCart, incCartQty, decCartQty }) => {
+const ProductDetail = ({ auth, cart, addToCart, incCartQty, decCartQty }) => {
   const { id } = useParams();
+  const push = useNavigate();
   const [product, setProduct] = useState({});
   const [isAdded, setIsAdded] = useState(false);
   const [qty, setQty] = useState(0);
 
-  function addProductToCart() {
-    addToCart(product);
-  }
+  const handleCartClick = () => {
+    if (auth.isLoggedIn) {
+      addToCart(product);
+    } else {
+      push('/auth/login');
+    }
+  };
 
   useEffect(() => {
     productData?.data?.forEach(item => {
@@ -107,7 +113,7 @@ const ProductDetail = ({ cart, addToCart, incCartQty, decCartQty }) => {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              onClick={addProductToCart}
+              onClick={handleCartClick}
               sx={{ mt: 2 }}
             >
               Keranjang
@@ -134,6 +140,7 @@ const ProductDetail = ({ cart, addToCart, incCartQty, decCartQty }) => {
 
 const mapStateToProps = state => {
   return {
+    auth: state.auth,
     cart: state.cart,
   };
 };
